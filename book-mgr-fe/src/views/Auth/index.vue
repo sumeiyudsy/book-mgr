@@ -35,7 +35,7 @@
             <a href="">忘记密码</a>
           </div>
           <div class="item">
-            <a-button size="large" type="primary">登录</a-button>
+            <a-button size="large" type="primary" @click="login">登录</a-button>
           </div>
         </a-tab-pane>
 
@@ -63,7 +63,11 @@
             </a-input>
           </div>
           <div class="item">
-            <a-input size="large" placeholder="邀请码">
+            <a-input
+              v-model:value="regForm.inviteCode"
+              size="large"
+              placeholder="邀请码"
+            >
               <template v-slot:prefix>
                 <MailOutlined />
               </template>
@@ -82,21 +86,61 @@
   import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons-vue';
   import { ref } from 'vue'
   import { auth } from '@/service'
+  import { message } from 'ant-design-vue'
+  import { result } from '@/helpers/utils'
 
   // 数据源
   const loginForm = ref({
-    username: '',
-    password: ''
-  })
-
-  const regForm = ref({
     account: '',
     password: ''
   })
 
-  const register = () => {
-    auth.register(regForm.value.account, regForm.value.password)
-    console.log('auth',auth, regForm.value)
+  const login = async () => {
+    if (loginForm.value.account === '') {
+      message.info('请输入账户')
+      return
+    }
+    if (loginForm.value.password === '') {
+      message.info('请输密码')
+      return
+    }
+    const res = await auth.login(loginForm.value.account, loginForm.value.password)
+    result(res)
+      .success((data) => {
+        message.success(data.msg)
+      })
+  }
+
+  // 注册
+  const regForm = ref({
+    account: '',
+    password: '',
+    inviteCode: ''
+  })
+
+  const register = async () => {
+    if (regForm.value.account === '') {
+      message.info('请输入账户')
+      return
+    }
+    if (regForm.value.password === '') {
+      message.info('请输密码')
+      return
+    }
+    if (regForm.value.inviteCode === '') {
+      message.info('请输邀请码')
+      return
+    }
+    const res = await auth.register(
+      regForm.value.account,
+      regForm.value.password,
+      regForm.value.inviteCode
+    )
+
+    result(res)
+      .success((data) => {
+        message.success(data.msg)
+      })
   }
 </script>
 

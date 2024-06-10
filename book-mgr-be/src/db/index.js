@@ -1,4 +1,6 @@
 require('./Schemas/User')
+require('./Schemas/InviteCode')
+
 const mongoose = require('mongoose')
 
 // Schema 映射了M哦能够DB下的一个集合，并且他的内容就是集合下文档的构成
