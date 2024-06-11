@@ -1,0 +1,71 @@
+.basic-layout {
+  .app-header {
+    height: 64px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 2px 8px #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    width: 100%;
+    z-index: 1;
+
+    .left {
+      display: flex;
+      align-items: center;
+
+      img {
+        height: 50px;
+        margin-right: 16px;
+      }
+
+      .title {
+        font-size: 18px;
+        color: rgba($color: #000000, $alpha: 0.87);
+      }
+    }
+
+    .right {
+      display: flex;
+      align-items: center;
+
+      .logout {
+        margin-left: 16px;
+        width: 80px;
+        height: 64px;
+        line-height: 64px;
+        text-align: center;
+        cursor: pointer;
+        &:hover {
+          background-color: #eee;
+        }
+      }
+    }
+  }
+
+  .app-header-placleholder {
+    height: 64px;
+    width: 100%;
+  }
+
+  .app-content {
+    display: flex;
+
+    .left {
+      position: fixed;
+      top: 64px;
+      bottom: 0;
+      width: 256px;
+      background-color: #efefef;
+    }
+
+    .right {
+      flex: 1;
+      padding: 24px;
+      margin-left: 256px;
+    }
+  }
+}

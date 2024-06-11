@@ -145,5 +145,5 @@
 </script>
 
 <style lang="scss" scpoed>
-  @import './index.scss'
+  @import './index.scss';
 </style>
