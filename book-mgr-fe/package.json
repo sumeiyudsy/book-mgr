@@ -11,6 +11,8 @@
     "ant-design-vue": "^4.2.2",
     "axios": "^1.7.2",
     "core-js": "^3.6.5",
+    "dayjs": "^1.11.11",
+    "moment": "^2.30.1",
     "vue": "^3.2.8",
     "vue-awesome-mui": "^1.7.3",
     "vue-router": "^4.0.11",

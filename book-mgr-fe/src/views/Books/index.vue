@@ -6,20 +6,202 @@
 
     <space-between>
       <div class="search">
-        <a-input-search placeholder="根据书名搜索" enter-button />
+        <a-input-search
+          v-model:value="keyword"
+          placeholder="根据书名搜索"
+          enter-button
+          @search="onSearch"
+        />
+        <a
+          v-if="isSearch"
+          href="javascript:;"
+          class="back"
+          @click="clearSearch"
+        >清空搜索</a>
       </div>
 
-      <a-button>添加一条</a-button>
+      <a-button @click="add">添加一条</a-button>
       
     </space-between>
-
     <a-divider />
-    
+
+    <a-table :dataSource="list" :columns="columns" :pagination="false">
+      <template #bodyCell="{ column, text, record }">
+        <template v-if="column.dataIndex === 'publishDate'">
+          <span>{{ formatTimestamp(text) }}</span>
+        </template>
+        <template v-if="column.dataIndex === 'count'">
+          <a href="javascript:;" @click="editCount('IN_COUNT', record)">入库</a>
+          &nbsp;
+          <span>{{ text }}</span>
+          &nbsp;
+          <a href="javascript:;" @click="editCount('OUT_COUNT', record)">出库</a>
+        </template>
+        <template v-if="column.title === '操作'">
+          <a
+            href="javascript:;"
+            @click="update(record)"
+          >编辑 </a>
+          <a
+            href="javascript:;"
+            @click="remove(record)"
+          >删除</a>
+        </template>
+      </template>
+    </a-table>
+    <space-between style="margin-top: 24px;">
+      <div></div>
+      <a-pagination
+        v-model:current="curPage"
+        :total="total"
+        :pageSize="10"
+        @change="setPage"
+      />
+    </space-between>
+
   </a-card>
+
+  <add-one
+    v-model:show="show"
+  />
+
+  <update-book
+    v-model:show="showUpdateModel"
+    :book="curEditBook"
+    @update="updateCurBook"
+  />
+
+  <edit-stock
+    v-model:showStock="showStock"
+    :stockType="stockType"
+    :stockData="stockData"
+    @onSuccess="onSuccess"
+  />
+
 </template>
 
 <script setup>
-import SpaceBetween from '@/components/SpaceBetween'
+  import SpaceBetween from '@/components/SpaceBetween'
+  import AddOne from './AddOne'
+  import EditStock from './EditStock'
+  import UpdateBook from './UpdateBook'
+  import { ref, onMounted } from 'vue'
+  import { message } from 'ant-design-vue'
+  import { result } from '@/helpers/utils'
+  import { book } from '@/service'
+  import { formatTimestamp } from '@/helpers/utils'
+
+  const show = ref(false)
+
+  const add = () => {
+    show.value = true
+  }
+
+  const columns = [
+    {
+      title: '书名',
+      dataIndex: 'name'
+    },
+    {
+      title: '作者',
+      dataIndex: 'author'
+    },
+    {
+      title: '库存',
+      dataIndex: 'count'
+    },
+    {
+      title: '价格',
+      dataIndex: 'price'
+    },
+    {
+      title: '日期',
+      dataIndex: 'publishDate'
+    },
+    {
+      title: '分类',
+      dataIndex: 'classify'
+    },
+    {
+      title: '操作'
+    }
+  ]
+  const list = ref([])
+  let curPage = ref(1)
+  let total = ref(0)
+  let keyword = ref()
+  let isSearch = ref(false)
+
+  const getList = async () => {
+    const res = await book.list({
+      page: curPage.value,
+      keyword: keyword.value
+    })
+    result(res)
+      .success(({ data }) => {
+        const { list: l, total: t } = data
+        list.value = l
+        total.value = t
+      })
+  }
+
+  onMounted(() => {
+    getList()
+  })
+
+  const setPage = (page) => {
+    curPage.value = page
+    getList()
+  }
+
+  const onSearch = () => {
+    isSearch.value = !!keyword.value
+    getList()
+  }
+
+  const clearSearch = () => {
+    isSearch.value = false
+    keyword.value = ''
+    getList()
+  }
+
+  const remove = async ({ _id }) => {
+
+    const res = await book.remove(_id)
+
+    result(res)
+      .success(({ msg }) => {
+        message.success(msg)
+        getList()
+      })
+  }
+
+  let showUpdateModel = ref(false)
+  let curEditBook = ref({})
+
+  const update = async (record) => {
+    showUpdateModel.value = true
+    curEditBook.value = record
+  }
+
+  const showStock = ref(false)
+  const stockType = ref()
+  const stockData = ref({})
+
+  const editCount = (type, record) => {
+    showStock.value = true
+    stockType.value = type
+    stockData.value = record
+  }
+
+  const onSuccess = () => {
+    getList()
+  }
+
+  const updateCurBook = (newDate) => {
+    Object.assign(curEditBook.value, newDate)
+  }
+  
 </script>
 
 <style lang="scss" scoped>

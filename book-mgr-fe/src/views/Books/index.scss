@@ -1,3 +1,11 @@
 .search {
   width: 200px;
+  display: flex;
+  align-items: center;
+}
+
+.back {
+  width: 100px;
+  margin-left: 16px;
+  cursor: pointer;
 }
