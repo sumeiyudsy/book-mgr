@@ -45,7 +45,7 @@
     },
   })
 
-  const emits = defineEmits(['update:show', 'update: updateEdit'])
+  const emits = defineEmits(['update:show', 'updateEdit'])
 
   let editForm = ref({
     name: '',
@@ -65,7 +65,7 @@
     result(res)
       .success(({ data, msg }) => {
         message.success(msg)
-        emits('update:updateEdit', data)
+        emits('updateEdit', data)
         close()
       })
   }

@@ -20,7 +20,7 @@
         >清空搜索</a>
       </div>
 
-      <a-button @click="add">添加一条</a-button>
+      <a-button v-only-admin @click="add">添加一条</a-button>
       
     </space-between>
     <a-divider />
@@ -40,9 +40,15 @@
         <template v-if="column.title === '操作'">
           <a
             href="javascript:;"
+            @click="toDetail(record)"
+          >详情 </a>
+          <a
+            v-only-admin
+            href="javascript:;"
             @click="update(record)"
           >编辑 </a>
           <a
+            v-only-admin
             href="javascript:;"
             @click="remove(record)"
           >删除</a>
@@ -68,7 +74,7 @@
   <update-book
     v-model:show="showUpdateModel"
     :book="curEditBook"
-    @update="updateCurBook"
+    @updateEdit="updateCurBook"
   />
 
   <edit-stock
@@ -86,6 +92,7 @@
   import EditStock from './EditStock'
   import UpdateBook from './UpdateBook'
   import { ref, onMounted } from 'vue'
+  import { useRouter } from 'vue-router'
   import { message } from 'ant-design-vue'
   import { result } from '@/helpers/utils'
   import { book } from '@/service'
@@ -165,6 +172,7 @@
     getList()
   }
 
+  // 删除 
   const remove = async ({ _id }) => {
 
     const res = await book.remove(_id)
@@ -176,6 +184,13 @@
       })
   }
 
+  // 详情
+  const router = useRouter()
+  const toDetail = async (record) => {
+    router.push(`/books/${record._id}`)
+  }
+  
+  // 编辑
   let showUpdateModel = ref(false)
   let curEditBook = ref({})
 

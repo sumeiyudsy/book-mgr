@@ -88,7 +88,12 @@
   import { auth } from '@/service'
   import { message } from 'ant-design-vue'
   import { result } from '@/helpers/utils'
+  import { getCharacterInfoById } from '@/helpers/character'
+  import store from '@/store'
+  import { useRouter} from 'vue-router'
+  import { setToken } from '@/helpers/token'
 
+  const router = useRouter()
   // 数据源
   const loginForm = ref({
     account: '',
@@ -106,8 +111,14 @@
     }
     const res = await auth.login(loginForm.value.account, loginForm.value.password)
     result(res)
-      .success((data) => {
-        message.success(data.msg)
+      .success(({ msg, data: { user, token }}) => {
+        message.success(msg)
+
+        store.commit('setUserInfo', user)
+        store.commit('setUserCharacter', getCharacterInfoById(user.character))
+
+        setToken(token)
+        router.replace('/books')
       })
   }
 
