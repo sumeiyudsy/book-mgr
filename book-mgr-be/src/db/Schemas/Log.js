@@ -14,6 +14,11 @@ const LogSchema = new mongoose.Schema({
     status: Number
   },
 
+  startTime: Number,
+  endTime: Number,
+
+  show: Boolean,
+
   meta: getMeta()
 })
 

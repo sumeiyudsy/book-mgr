@@ -22,18 +22,26 @@ const logMiddleWare = async (ctx, next) => {
   const url = ctx.url
   const method = ctx.method
   const status = ctx.status
+  let show = true
+
+  if (url === '/log/delete') {
+    show = false
+  }
 
   let responseBody = ''
 
   if (typeof ctx.body === 'string') {
-    responseBody = ctx.body
+    const obj =  JSON.parse(ctx.body)
+    responseBody = JSON.stringify({code: obj.code, msg: obj.msg})
   } else {
     try {
-      responseBody = JSON.stringify(ctx.body)
+      responseBody = JSON.stringify({code: ctx.body.code, msg: ctx.body.msg})
     } catch(e) {
       responseBody = ''
     }
   }
+
+  const endTime = Date.now()
 
   const log = new Log({
     user: {
@@ -45,12 +53,14 @@ const logMiddleWare = async (ctx, next) => {
       responseBody,
       method,
       status
-    }
+    },
+    endTime,
+    startTime,
+    show
   })
 
   await log.save()
 
-  const endTime = Date.now()
 }
 
 module.exports = {
