@@ -10,7 +10,6 @@ const LogSchema = new mongoose.Schema({
   request: {
     method: String,
     url: String,
-    responseBody: String,
     status: Number
   },
 

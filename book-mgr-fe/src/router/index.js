@@ -42,15 +42,15 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const reqArr = []
+  // const reqArr = []
   if (!store.state.characterInfo.length) {
-    reqArr.push(store.dispatch('getCharacterInfo'))
+    await store.dispatch('getCharacterInfo')
   }
   if (!store.state.userInfo.length) {
-    reqArr.push(store.dispatch('getUserInfo'))
+    await store.dispatch('getUserInfo')
   }
 
-  await Promise.all(reqArr)
+  // await Promise.all(reqArr)
   
   next()
 })

@@ -2,6 +2,7 @@ const { verify, getToken} = require('../token')
 const mongoose = require('mongoose')
 
 const Log = mongoose.model('Log')
+const LogResponse = mongoose.model('LogResponse')
 
 const logMiddleWare = async (ctx, next) => {
   const startTime = Date.now()
@@ -31,11 +32,10 @@ const logMiddleWare = async (ctx, next) => {
   let responseBody = ''
 
   if (typeof ctx.body === 'string') {
-    const obj =  JSON.parse(ctx.body)
-    responseBody = JSON.stringify({code: obj.code, msg: obj.msg})
+    responseBody = ctx.body
   } else {
     try {
-      responseBody = JSON.stringify({code: ctx.body.code, msg: ctx.body.msg})
+      responseBody = JSON.stringify(ctx.body)
     } catch(e) {
       responseBody = ''
     }
@@ -49,8 +49,7 @@ const logMiddleWare = async (ctx, next) => {
       id: payload.id
     },
     request: {
-      url: url,
-      responseBody,
+      url,
       method,
       status
     },
@@ -59,7 +58,14 @@ const logMiddleWare = async (ctx, next) => {
     show
   })
 
-  await log.save()
+  log.save()
+
+  const logRes = new LogResponse({
+    logId: log._id,
+    data: responseBody
+  })
+
+  logRes.save()
 
 }
 
