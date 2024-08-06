@@ -14,13 +14,15 @@
         v-if="item.children"
       >
         <template #title>
-          <span> <MailOutlined /> <span></span></span>
+          <span> <MailOutlined /> <span>{{ item.title }}</span></span>
         </template>
-        <!-- <a-menu-item-group key="g1">
-          <template #title> <QqOutlined /> <span>item 2</span></template>
-          <a-menu-item key="1">1</a-menu-item>
-          <a-menu-item key="2">2</a-menu-item>
-        </a-menu-item-group> -->
+        <a-menu-item
+          v-for="(child) in item.children"
+          :key="child.url"
+          @click="to(child.url)"
+        >
+          {{ child.title }}
+        </a-menu-item>
       </a-sub-menu>
       <a-menu-item v-else :key="item.url" @click="to(item.url)">
         <span>{{ item.title }}</span>

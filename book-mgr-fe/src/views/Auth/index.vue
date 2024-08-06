@@ -32,7 +32,7 @@
             </a-input>
           </div>
           <div class="item">
-            <a href="">忘记密码</a>
+            <a href="JavaScript:;" @click="forgetPwd">忘记密码</a>
           </div>
           <div class="item">
             <a-button size="large" type="primary" @click="login">登录</a-button>
@@ -80,10 +80,13 @@
       </a-tabs>
     </div>
   </div>
+
+  <forget-password
+    v-model:showModal="showModal"
+  />
 </template>
 
 <script setup>
-  import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons-vue';
   import { ref } from 'vue'
   import { auth } from '@/service'
   import { message } from 'ant-design-vue'
@@ -92,6 +95,7 @@
   import store from '@/store'
   import { useRouter} from 'vue-router'
   import { setToken } from '@/helpers/token'
+  import forgetPassword from './ForgetPassword/index'
 
   const router = useRouter()
   // 数据源
@@ -152,6 +156,12 @@
       .success((data) => {
         message.success(data.msg)
       })
+  }
+
+  // 忘记密码
+  let showModal = ref(false)
+  const forgetPwd = async () => {
+    showModal.value = true
   }
 </script>
 
