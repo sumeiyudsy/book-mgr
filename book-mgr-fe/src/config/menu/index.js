@@ -23,6 +23,12 @@ export default [
         url: '/reset/password',
         onlyAdmin: true,
 
+      },
+      {
+        title: '邀请码',
+        url: '/reset/invite-code',
+        onlyAdmin: true,
+
       }
     ]
   }
