@@ -30,6 +30,9 @@
         <template v-if="column.dataIndex === 'publishDate'">
           <span>{{ formatTimestamp(text) }}</span>
         </template>
+        <template v-if="column.dataIndex === 'classify'">
+          <span>{{ getBookClassify(text) }}</span>
+        </template>
         <template v-if="column.dataIndex === 'count'">
           <a href="javascript:;" @click="editCount('IN_COUNT', record)">入库</a>
           &nbsp;
@@ -69,6 +72,7 @@
 
   <add-one
     v-model:show="show"
+    @getList="getList"
   />
 
   <update-book
@@ -97,6 +101,7 @@
   import { result } from '@/helpers/utils'
   import { book } from '@/service'
   import { formatTimestamp } from '@/helpers/utils'
+  import { getBookClassify } from '@/helpers/book'
 
   const show = ref(false)
 
@@ -138,7 +143,7 @@
   let total = ref(0)
   let keyword = ref()
   let isSearch = ref(false)
-
+  
   const getList = async () => {
     const res = await book.list({
       page: curPage.value,
@@ -152,7 +157,7 @@
       })
   }
 
-  onMounted(() => {
+  onMounted(async () => {
     getList()
   })
 
@@ -200,7 +205,7 @@
   }
 
   const showStock = ref(false)
-  const stockType = ref()
+  const stockType = ref('')
   const stockData = ref({})
 
   const editCount = (type, record) => {

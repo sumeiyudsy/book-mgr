@@ -42,6 +42,11 @@ const routes = [
         name: 'InviteCode',
         component: () => import(/* webpackChunkName: "InviteCode" */ '../views/InviteCode/index.vue')
       },
+      {
+        path: '/reset/book-classify',
+        name: 'BookClassify',
+        component: () => import(/* webpackChunkName: "BookClassify" */ '../views/BookClassify/index.vue')
+      },
     ]
   }
 ];
@@ -58,6 +63,9 @@ router.beforeEach(async (to, from, next) => {
   }
   if (!store.state.userInfo.length) {
     await store.dispatch('getUserInfo')
+  }
+  if (!store.state.bookClassify.length) {
+    await store.dispatch('getBookClassify')
   }
 
   // await Promise.all(reqArr)

@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import { character, user } from '@/service'
+import { character, user, bookClassify } from '@/service'
 import { result } from '@/helpers/utils'
 import { getCharacterInfoById } from '@/helpers/character'
 
@@ -7,7 +7,8 @@ export default createStore({
   state: {
     characterInfo: [],
     userInfo: {},
-    userCharacter: {}
+    userCharacter: {},
+    bookClassify: []
   },
   mutations: {
     setCharacterInfo(state, characterInfo) {
@@ -18,6 +19,9 @@ export default createStore({
     },
     setUserCharacter(state, userCharacter) {
       state.userCharacter = userCharacter
+    },
+    setBookClassify(state, bookClassify) {
+      state.bookClassify = bookClassify
     }
   },
   actions: {
@@ -37,7 +41,14 @@ export default createStore({
           store.commit('setUserInfo', data)
           
           store.commit('setUserCharacter', getCharacterInfoById(data.character))
-          console.log('store', store)
+        })
+    },
+    async getBookClassify (store) {
+      const res = await bookClassify.list()
+
+      result(res)
+        .success(({ data }) => {
+          store.commit('setBookClassify', data)
         })
     }
   },

@@ -20,7 +20,13 @@
           <a-date-picker v-model:value="editForm.publishDate" />
         </a-form-item>
         <a-form-item label="分类">
-          <a-input v-model:value="editForm.classify" />
+          <a-select v-model:value="editForm.classify">
+            <a-select-option 
+              v-for="item in bookClassify"
+              :key="item._id"
+              :value="item._id"
+            >{{ item.title }}</a-select-option>
+          </a-select>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -34,6 +40,9 @@
   import { message } from 'ant-design-vue'
   import dayjs, { Dayjs } from 'dayjs'
   import { formatTimestamp } from '@/helpers/utils'
+  import store from '@/store'
+
+  const { bookClassify } = store.state
 
   const props = defineProps({
     show: {

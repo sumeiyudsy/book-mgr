@@ -20,7 +20,13 @@
           <a-date-picker v-model:value="addForm.publishDate" />
         </a-form-item>
         <a-form-item label="分类">
-          <a-input v-model:value="addForm.classify" />
+          <a-select v-model:value="addForm.classify">
+            <a-select-option 
+              v-for="item in bookClassify"
+              :key="item._id"
+              :value="item._id"
+            >{{ item.title }}</a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item label="库存">
           <a-input v-model:value="addForm.count" />
@@ -35,7 +41,9 @@
   import { book } from '@/service'
   import { result, clone } from '@/helpers/utils'
   import { message } from 'ant-design-vue'
+  import store from '@/store'
 
+  const { bookClassify } = store.state
   const defaultFormData = {
     name: '',
     price: 0,
@@ -52,9 +60,10 @@
     }
   })
 
-  const emits = defineEmits(['update:show'])
+  const emits = defineEmits(['update:show', 'getList'])
 
   const addForm = ref(clone(defaultFormData))
+  addForm.value.classify = bookClassify[0]?._id
 
   const submit = async () => {
     const form = clone(addForm.value)
@@ -66,6 +75,7 @@
         // 清空表单
         Object.assign(addForm.value, defaultFormData)
         message.success(d.msg)
+        emits('getList')
       })
   }
 

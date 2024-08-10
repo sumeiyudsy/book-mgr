@@ -6,5 +6,16 @@ import * as character from "./character";
 import * as log from "./log";
 import * as resetPassword from "./reset-password";
 import * as inviteCode from "./invite-code";
+import * as bookClassify from "./book-classify";
 
-export { auth, book, inventoryLog, user, character, log, resetPassword, inviteCode }
+export { 
+    auth,
+    book,
+    inventoryLog,
+    user,
+    character,
+    log,
+    resetPassword,
+    inviteCode,
+    bookClassify
+}

@@ -8,7 +8,6 @@
       v-for="(item) in menu"
       :key="item.url"
       v-only-admin="item.onlyAdmin"
-      @click="handleClick"
     >
       <a-sub-menu
         v-if="item.children"

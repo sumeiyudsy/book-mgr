@@ -8,7 +8,12 @@ const router = new Router({
 })
 
 router.get('/list', async (ctx) => {
-    const list = await BookClassify.find().exec()
+    const list = await BookClassify
+        .find()
+        .sort({
+            _id: -1
+        })
+        .exec()
 
     ctx.body = {
         data: list,
@@ -19,9 +24,9 @@ router.get('/list', async (ctx) => {
 })
 
 router.post('/add', async (ctx) => {
-    const { title } = ctx.request.query
+    const { title } = ctx.request.body
 
-    const one = BookClassify.find({
+    const one = await BookClassify.findOne({
         title
     }).exec()
 

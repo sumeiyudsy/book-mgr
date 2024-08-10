@@ -22,13 +22,16 @@ export default [
         title: '重置密码列表',
         url: '/reset/password',
         onlyAdmin: true,
-
       },
       {
         title: '邀请码',
         url: '/reset/invite-code',
         onlyAdmin: true,
-
+      },
+      {
+        title: '图书分类管理',
+        url: '/reset/book-classify',
+        onlyAdmin: true,
       }
     ]
   }
