@@ -1,8 +1,8 @@
 <template>
-  <a-card  v-only-admin>
-    <h2>用户管理</h2>
+  <a-card v-only-admin :title="props.simple ? '最近添加的用户' : ''">
+    <h2 v-if="!props.simple">用户管理</h2>
 
-    <a-divider />
+    <a-divider v-if="!props.simple" />
 
     <space-between>
       <div class="search">
@@ -20,7 +20,7 @@
         >清空搜索</a>
       </div>
 
-      <a-button @click="showAddModel = true">添加用户</a-button>
+      <a-button v-if="!props.simple" @click="showAddModel = true">添加用户</a-button>
     </space-between>
 
     <a-divider />
@@ -51,7 +51,7 @@
 
     <flex-end>
       <a-pagination
-        v-if="!isSearch"
+        v-if="!isSearch && !props.simple"
         style="margin: 24px;"
         v-model:current="curPage"
         :total="total"
@@ -86,7 +86,7 @@
 </template>
 
 <script setup>
-  import { ref, onMounted } from 'vue'
+  import { ref, defineProps, onMounted } from 'vue'
   import { user } from '@/service'
   import { result, formatTimestamp } from '@/helpers/utils'
   import { getCharacterInfoById } from '@/helpers/character'
@@ -96,6 +96,13 @@
   import { EditOutlined } from '@ant-design/icons-vue'
   import AddOne from './AddOne'
   import store from '@/store'
+
+  const props = defineProps({
+    simple: {
+      type: Boolean,
+      required: false
+    }
+  })
 
   const columns = [
     {
@@ -109,12 +116,15 @@
     {
       title: '角色',
       dataIndex: 'character'
-    },
-    {
-      title: '操作',
-      dataIndex: 'actions'
     }
   ]
+
+  if (!props.simple) {
+    columns.push({
+      title: '操作',
+      dataIndex: 'actions'
+    })
+  }
 
   const { characterInfo } = store.state
   const keyword = ref('')

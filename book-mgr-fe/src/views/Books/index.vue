@@ -1,8 +1,8 @@
 <template>
-  <a-card>
-    <h2>图书列表</h2>
+  <a-card :title="props.simple ? '最近添加的图书' : ''">
+    <h2 v-if="!props.simple">图书列表</h2>
 
-    <a-divider />
+    <a-divider v-if="!props.simple" />
 
     <space-between>
       <div class="search">
@@ -20,12 +20,17 @@
         >清空搜索</a>
       </div>
 
-      <a-button v-only-admin @click="add">添加一条</a-button>
+      <a-button v-if="!props.simple" v-only-admin @click="add">添加一条</a-button>
       
     </space-between>
     <a-divider />
 
-    <a-table :dataSource="list" :columns="columns" :pagination="false">
+    <a-table
+      :dataSource="list"
+      :columns="columns"
+      :pagination="false"
+      :scroll="{ x: 'max-content' }"
+    >
       <template #bodyCell="{ column, text, record }">
         <template v-if="column.dataIndex === 'publishDate'">
           <span>{{ formatTimestamp(text) }}</span>
@@ -58,15 +63,14 @@
         </template>
       </template>
     </a-table>
-    <space-between style="margin-top: 24px;">
-      <div></div>
+    <flex-end v-if="!props.simple" style="margin-top: 24px;">
       <a-pagination
         v-model:current="curPage"
         :total="total"
         :pageSize="10"
         @change="setPage"
       />
-    </space-between>
+    </flex-end>
 
   </a-card>
 
@@ -92,16 +96,24 @@
 
 <script setup>
   import SpaceBetween from '@/components/SpaceBetween'
+  import FlexEnd from '@/components/FlexEnd'
   import AddOne from './AddOne'
   import EditStock from './EditStock'
   import UpdateBook from './UpdateBook'
-  import { ref, onMounted } from 'vue'
+  import { ref, defineProps, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
   import { message } from 'ant-design-vue'
   import { result } from '@/helpers/utils'
   import { book } from '@/service'
   import { formatTimestamp } from '@/helpers/utils'
   import { getBookClassify } from '@/helpers/book'
+
+  const props = defineProps({
+    simple: {
+      type: Boolean,
+      required: false
+    }
+  })
 
   const show = ref(false)
 
@@ -133,11 +145,15 @@
     {
       title: '分类',
       dataIndex: 'classify'
-    },
-    {
-      title: '操作'
     }
   ]
+
+  if (!props.simple) {
+    columns.push({
+      title: '操作'
+    })
+  }
+  
   const list = ref([])
   let curPage = ref(1)
   let total = ref(0)

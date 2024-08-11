@@ -8,6 +8,7 @@ import * as resetPassword from "./reset-password";
 import * as inviteCode from "./invite-code";
 import * as bookClassify from "./book-classify";
 import * as profile from "./profile";
+import * as dashboard from "./dashboard";
 
 export { 
     auth,
@@ -19,5 +20,6 @@ export {
     resetPassword,
     inviteCode,
     bookClassify,
-    profile
+    profile,
+    dashboard
 }
