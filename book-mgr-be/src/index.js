@@ -16,9 +16,9 @@ connect().then(() => {
       maxFileSize: 200 * 1024 *1024
     }
   }))
-  // app.use(catchTokenError)
+  app.use(catchTokenError)
   
-  // koaJwtMiddleware(app)
+  koaJwtMiddleware(app)
   
   app.use(logMiddleWare)
 

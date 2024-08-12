@@ -67,6 +67,10 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  if (to.path === '/auth') {
+    next()
+    return
+  }
   // const reqArr = []
   if (!store.state.characterInfo.length) {
     await store.dispatch('getCharacterInfo')
