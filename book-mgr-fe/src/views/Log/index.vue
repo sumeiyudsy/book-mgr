@@ -1,10 +1,10 @@
 <template>
   <div>
     <a-spin :spinning="loding">
-      <a-card>
-        <h2>操作日志</h2>
+      <a-card :title="props.simple ? '最近添加的日志' : ''">
+        <h2 v-if="!props.simple">操作日志</h2>
 
-        <a-divider />
+        <a-divider v-if="!props.simple" />
 
         <div>
           <a-table
@@ -35,6 +35,7 @@
 
         <flex-end style="margin-top: 24px;">
           <a-pagination
+            v-if="!props.simple"
             v-model:current="curPage"
             :pageSize="20"
             :total="total"
@@ -47,13 +48,20 @@
 </template>
 
 <script setup>
-  import { ref, onMounted } from 'vue'
+  import { ref, defineProps, onMounted } from 'vue'
   import { log } from '@/service'
   import { result, formatTimestamp } from '@/helpers/utils'
   import { getLogInfoByPath } from '@/helpers/log'
   import { message } from 'ant-design-vue'
 
   import FlexEnd from '@/components/FlexEnd'
+
+  const props = defineProps({
+    simple: {
+      type: Boolean,
+      required: false
+    }
+  })
 
   const columns = [
     {
@@ -67,11 +75,14 @@
     {
       title: '记录时间',
       dataIndex: 'createdAt'
-    },
-    {
-      title: '操作'
     }
   ]
+
+  if (!props.simple) {
+    columns.push({
+      title: '操作'
+    })
+  }
 
   const curPage = ref(1)
   const total = ref(0)

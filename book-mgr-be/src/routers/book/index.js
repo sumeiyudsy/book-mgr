@@ -1,6 +1,8 @@
 const Router = require('@koa/router')
 const mongoose = require('mongoose')
 const { getBody } = require('../../helpers/utils')
+const { loadExcel, getFirstSheet } = require('../../helpers/excel')
+const config = require('../../project.config')
 
 const BOOK_CONST = {
   IN: 'IN_COUNT',
@@ -9,6 +11,7 @@ const BOOK_CONST = {
 
 const Book = mongoose.model('Book')
 const InventoryLog = mongoose.model('InventoryLog')
+const BookClassify = mongoose.model('BookClassify')
 
 const findBookOne = async (id) => {
   const one = await Book.findOne({
@@ -214,6 +217,52 @@ router.get('/detail/:id', async (ctx) => {
     msg: '查询成功'
   }
 
+})
+
+
+router.post('/addMany', async (ctx) => {
+  const { fileKey = '' } = ctx.request.body
+
+  const path = `${config.UPLOAD_DIR}/${fileKey}`
+
+  const excel = loadExcel(path)
+
+  const sheet = getFirstSheet(excel)
+
+  const arr = []
+
+  for(let i = 0; i < sheet.length; i++) {
+    const record = sheet[1]
+    const [name, price, author, publishDate, classify, count] = record
+
+    let classifyId = classify
+
+    const one = await BookClassify.findOne({ title: classify }).exec()
+
+    if (one) {
+      classifyId = one._id
+    }
+
+    arr.push({
+      name,
+      price,
+      author,
+      publishDate,
+      classifyId,
+      count
+    })
+  }
+
+  setTimeout(async() => {
+    console.log('arr', arr)
+    await Book.insertMany(arr)
+
+    ctx.body = {
+      code: 1,
+      msg: '添加成功',
+      data: arr.length
+    }
+  }, );
 })
 
 module.exports = router

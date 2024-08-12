@@ -41,3 +41,9 @@ export const detail = (id) => {
     `http://localhost:3000/book/detail/${id}`
   )
 }
+
+export const addMany = (fileKey) => {
+  return axios.post('http://localhost:3000/book/addMany', {
+    fileKey
+  })
+}

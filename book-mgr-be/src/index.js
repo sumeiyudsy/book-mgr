@@ -10,7 +10,12 @@ const app = new koa()
 
 connect().then(() => {
   app.use(cors())
-  app.use(body.koaBody())
+  app.use(body.koaBody({
+    multipart: true,
+    formidable: {
+      maxFileSize: 200 * 1024 *1024
+    }
+  }))
   // app.use(catchTokenError)
   
   // koaJwtMiddleware(app)

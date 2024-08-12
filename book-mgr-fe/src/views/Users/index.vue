@@ -1,8 +1,8 @@
 <template>
-  <a-card v-only-admin :title="props.simple ? '最近添加的用户' : ''">
-    <h2 v-if="!props.simple">用户管理</h2>
+  <a-card v-only-admin>
+    <h2>用户管理</h2>
 
-    <a-divider v-if="!props.simple" />
+    <a-divider />
 
     <space-between>
       <div class="search">
@@ -20,7 +20,16 @@
         >清空搜索</a>
       </div>
 
-      <a-button v-if="!props.simple" @click="showAddModel = true">添加用户</a-button>
+      <div>
+        <a-button v-if="!props.simple" @click="showAddModel = true">添加用户</a-button>
+
+        <a-upload
+          action="http://localhost:3000/upload/file"
+          @change="onUploadChange"
+        >
+          <a-button type="primary">上传 EXCEL 添加</a-button>
+        </a-upload>
+      </div>
     </space-between>
 
     <a-divider />
@@ -51,7 +60,7 @@
 
     <flex-end>
       <a-pagination
-        v-if="!isSearch && !props.simple"
+        v-if="!isSearch"
         style="margin: 24px;"
         v-model:current="curPage"
         :total="total"
@@ -86,7 +95,7 @@
 </template>
 
 <script setup>
-  import { ref, defineProps, onMounted } from 'vue'
+  import { ref, onMounted } from 'vue'
   import { user } from '@/service'
   import { result, formatTimestamp } from '@/helpers/utils'
   import { getCharacterInfoById } from '@/helpers/character'
@@ -96,13 +105,6 @@
   import { EditOutlined } from '@ant-design/icons-vue'
   import AddOne from './AddOne'
   import store from '@/store'
-
-  const props = defineProps({
-    simple: {
-      type: Boolean,
-      required: false
-    }
-  })
 
   const columns = [
     {
@@ -116,15 +118,12 @@
     {
       title: '角色',
       dataIndex: 'character'
-    }
-  ]
-
-  if (!props.simple) {
-    columns.push({
+    },
+    {
       title: '操作',
       dataIndex: 'actions'
-    })
-  }
+    }
+  ]
 
   const { characterInfo } = store.state
   const keyword = ref('')
@@ -196,6 +195,16 @@
         getUser()
       })
   }
+
+  const onUploadChange = ({ file }) => {
+    if (file.response) {
+      result(file.response)
+        .success(async (key) => {
+
+          const res = await user.addMany(key)
+        })
+    }
+  } 
   
   const setPage = (page) => {
     curPage.value = page

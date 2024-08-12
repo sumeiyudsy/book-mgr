@@ -20,7 +20,16 @@
         >清空搜索</a>
       </div>
 
-      <a-button v-if="!props.simple" v-only-admin @click="add">添加一条</a-button>
+      <div>
+        <a-button v-if="!props.simple" v-only-admin @click="add">添加一条</a-button>
+
+        <a-upload
+          action="http://localhost:3000/upload/file"
+          @change="onUploadChange"
+        >
+          <a-button type="primary">上传 EXCEL 添加</a-button>
+        </a-upload>
+      </div>
       
     </space-between>
     <a-divider />
@@ -237,6 +246,16 @@
   const updateCurBook = (newDate) => {
     Object.assign(curEditBook.value, newDate)
   }
+  
+  const onUploadChange = ({ file }) => {
+    if (file.response) {
+      result(file.response)
+        .success(async (key) => {
+
+          const res = await book.addMany(key)
+        })
+    }
+  } 
   
 </script>
 

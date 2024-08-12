@@ -25,7 +25,7 @@
             <Boook simple />
         </div>
         <div class="right">
-            <User simple />
+            <Log simple />
         </div>
     </div>
       
@@ -36,7 +36,7 @@
     import { dashboard } from '@/service'
     import { result } from '@/helpers/utils'
     import Boook from '@/views/Books/index.vue'
-    import User from '@/views/Users/index.vue'
+    import Log from '@/views/Log/index.vue'
 
     const loading = ref(true)
     const baseInfo = ref({
