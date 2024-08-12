@@ -6,11 +6,12 @@
       v-model:selectedKeys="selectedKeys"
       mode="inline"
       v-for="(item) in menu"
-      :key="item.url"
+      :key="item.title"
       v-only-admin="item.onlyAdmin"
     >
       <a-sub-menu
         v-if="item.children"
+        :key="item.title"
       >
         <template #title>
           <span> <MailOutlined /> <span>{{ item.title }}</span></span>
@@ -43,7 +44,16 @@
 
   onMounted(() => {
     selectedKeys.value = [route.path]
+
+    menu.forEach(item => {
+      (item.children || []).forEach(child => {
+        if (child.url === route.path) {
+          openKeys.value = [item.title]
+        }
+      })
+    })
   })
+
 
   const to = (url) => {
     router.push(url)
