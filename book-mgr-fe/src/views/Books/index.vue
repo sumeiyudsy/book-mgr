@@ -24,6 +24,7 @@
         <a-button v-if="!props.simple" v-only-admin @click="add">添加一条</a-button>
 
         <a-upload
+          class="ml-10"
           action="http://localhost:3000/upload/file"
           @change="onUploadChange"
         >
@@ -251,8 +252,11 @@
     if (file.response) {
       result(file.response)
         .success(async (key) => {
+          const { data } = await book.addMany(key)
+          message.success(`成功添加 ${data.data} 本书`)
 
-          const res = await book.addMany(key)
+          getList()
+
         })
     }
   } 

@@ -207,7 +207,8 @@ router.post('/addMany', async (ctx) => {
 
   ctx.body = {
     code: 1,
-    msg: '添加成功'
+    msg: '添加成功',
+    data: arr.length
   }
 })
 

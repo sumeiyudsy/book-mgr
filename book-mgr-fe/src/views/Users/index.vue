@@ -21,9 +21,10 @@
       </div>
 
       <div>
-        <a-button v-if="!props.simple" @click="showAddModel = true">添加用户</a-button>
+        <a-button @click="showAddModel = true">添加用户</a-button>
 
         <a-upload
+          class="ml-10"
           action="http://localhost:3000/upload/file"
           @change="onUploadChange"
         >
@@ -200,8 +201,11 @@
     if (file.response) {
       result(file.response)
         .success(async (key) => {
+          const { data } = await user.addMany(key)
+          message.success(`成功添加 ${data.data} 位用户`)
 
-          const res = await user.addMany(key)
+          getUser()
+
         })
     }
   } 
@@ -218,6 +222,10 @@
 </script>
 
 <style lang="scss" scoped>
+  .ml-10 {
+    margin-left: 10px;
+  }
+
   .search {
     display: flex;
     align-items: center;

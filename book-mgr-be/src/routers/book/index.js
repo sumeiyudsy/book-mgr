@@ -232,13 +232,14 @@ router.post('/addMany', async (ctx) => {
   const arr = []
 
   for(let i = 0; i < sheet.length; i++) {
-    const record = sheet[1]
+    let record = sheet[i]
     const [name, price, author, publishDate, classify, count] = record
 
     let classifyId = classify
 
-    const one = await BookClassify.findOne({ title: classify }).exec()
+    let one = await BookClassify.findOne({ title: classify }).exec()
 
+    console.log('one', one)
     if (one) {
       classifyId = one._id
     }
@@ -248,21 +249,18 @@ router.post('/addMany', async (ctx) => {
       price,
       author,
       publishDate,
-      classifyId,
+      classify: classifyId,
       count
     })
   }
 
-  setTimeout(async() => {
-    console.log('arr', arr)
-    await Book.insertMany(arr)
+  await Book.insertMany(arr)
 
-    ctx.body = {
-      code: 1,
-      msg: '添加成功',
-      data: arr.length
-    }
-  }, );
+  ctx.body = {
+    code: 1,
+    msg: '添加成功',
+    data: arr.length
+  }
 })
 
 module.exports = router
