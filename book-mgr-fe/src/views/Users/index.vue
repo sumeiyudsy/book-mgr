@@ -26,6 +26,7 @@
         <a-upload
           class="ml-10"
           action="http://localhost:3000/upload/file"
+          :headers="headers"
           @change="onUploadChange"
         >
           <a-button type="primary">上传 EXCEL 添加</a-button>
@@ -100,6 +101,7 @@
   import { user } from '@/service'
   import { result, formatTimestamp } from '@/helpers/utils'
   import { getCharacterInfoById } from '@/helpers/character'
+  import { getHeaders } from '@/helpers/request'
   import SpaceBetween from '@/components/SpaceBetween'
   import FlexEnd from '@/components/FlexEnd'
   import { message } from 'ant-design-vue'
@@ -125,6 +127,8 @@
       dataIndex: 'actions'
     }
   ]
+
+  const headers = getHeaders()
 
   const { characterInfo } = store.state
   const keyword = ref('')

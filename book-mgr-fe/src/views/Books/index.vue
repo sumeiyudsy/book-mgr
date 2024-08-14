@@ -26,6 +26,7 @@
         <a-upload
           class="ml-10"
           action="http://localhost:3000/upload/file"
+          :headers="headers"
           @change="onUploadChange"
         >
           <a-button type="primary">上传 EXCEL 添加</a-button>
@@ -117,6 +118,9 @@
   import { book } from '@/service'
   import { formatTimestamp } from '@/helpers/utils'
   import { getBookClassify } from '@/helpers/book'
+  import { getHeaders } from '@/helpers/request'
+
+  const headers = getHeaders()
 
   const props = defineProps({
     simple: {
