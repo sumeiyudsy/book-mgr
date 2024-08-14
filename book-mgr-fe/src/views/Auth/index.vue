@@ -115,13 +115,16 @@
     }
     const res = await auth.login(loginForm.value.account, loginForm.value.password)
     result(res)
-      .success(({ msg, data: { user, token }}) => {
+      .success(async ({ msg, data: { user, token }}) => {
         message.success(msg)
+
+        setToken(token)
+        
+        await store.dispatch('getCharacterInfo')
 
         store.commit('setUserInfo', user)
         store.commit('setUserCharacter', getCharacterInfoById(user.character))
 
-        setToken(token)
         router.replace('/books')
       })
   }

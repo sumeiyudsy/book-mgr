@@ -7,7 +7,7 @@
       </div>
       <div class="right">
         <div class="hello-msg">你好，222</div>
-        <div class="logout">退出</div>
+        <div class="logout" @click="logout">退出</div>
       </div>
     </div>
     <div class="app-header-placleholder"></div>
@@ -24,6 +24,12 @@
 
 <script setup>
 import AppNav from './AppNav/index.vue'
+import { setToken } from '@/helpers/token'
+
+const logout = () => {
+  setToken('')
+  window.location.href = '/'
+}
 </script>
 
 <style scoped lang="scss">
