@@ -23,6 +23,14 @@ const defaultCharacters = [
       book: [1],
       user: [-1]
     }
+  },
+  {
+    title: '工作人员',
+    name: 'staff',
+    power: {
+      book: [0],
+      user: [0]
+    }
   }
 ]
 

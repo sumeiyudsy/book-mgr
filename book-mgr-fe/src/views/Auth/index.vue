@@ -2,7 +2,7 @@
   <div class="auth">
     <div class="bg"></div>
     <div class="title-info">
-      <img src="" alt="" class="image">
+      <img src="../../assets/book.png" alt="" class="image">
       <h2 class="title">图书管理系统后台</h2>
     </div>
 
