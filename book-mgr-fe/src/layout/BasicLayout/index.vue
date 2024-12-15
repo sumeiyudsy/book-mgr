@@ -6,7 +6,7 @@
         <div class="title">图书管理系统系统</div>
       </div>
       <div class="right">
-        <div class="hello-msg">你好，222</div>
+        <div class="hello-msg">你好，{{ userInfo.account }}</div>
         <div class="logout" @click="logout">退出</div>
       </div>
     </div>
@@ -25,6 +25,9 @@
 <script setup>
 import AppNav from './AppNav/index.vue'
 import { setToken } from '@/helpers/token'
+import store from '@/store'
+
+const { userInfo } = store.state
 
 const logout = () => {
   setToken('')
