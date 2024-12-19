@@ -14,6 +14,10 @@ const BookSchema = new mongoose.Schema({
   classify: String,
   // 库存
   count: Number,
+  // 图书编号
+  bookNo: String,
+  // 出版社
+  publish: String,
 
   meta: getMeta()
 })

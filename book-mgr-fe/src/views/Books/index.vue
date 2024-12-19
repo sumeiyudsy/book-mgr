@@ -50,11 +50,9 @@
           <span>{{ getBookClassify(text) }}</span>
         </template>
         <template v-if="column.dataIndex === 'count'">
-          <a href="javascript:;" @click="editCount('IN_COUNT', record)">入库</a>
-          &nbsp;
+          <a href="javascript:;" @click="editCount('IN_COUNT', record)">入库 </a>
           <span>{{ text }}</span>
-          &nbsp;
-          <a href="javascript:;" @click="editCount('OUT_COUNT', record)">出库</a>
+          <a href="javascript:;" @click="editCount('OUT_COUNT', record)"> 出库</a>
         </template>
         <template v-if="column.title === '操作'">
           <a
@@ -159,6 +157,14 @@
     {
       title: '分类',
       dataIndex: 'classify'
+    },
+    {
+      title: '出版社',
+      dataIndex: 'publish'
+    },
+    {
+      title: '图书编号',
+      dataIndex: 'bookNo'
     }
   ]
 

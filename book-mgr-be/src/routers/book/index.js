@@ -32,7 +32,9 @@ router.post('/add', async (ctx) => {
     author,
     publishDate,
     classify,
-    count
+    count,
+    bookNo,
+    publish
    } = getBody(ctx)
 
    const book = new Book({
@@ -41,7 +43,9 @@ router.post('/add', async (ctx) => {
     author,
     publishDate,
     classify,
-    count
+    count,
+    bookNo,
+    publish
    })
 
    const res = await book.save()
@@ -233,7 +237,7 @@ router.post('/addMany', async (ctx) => {
 
   for(let i = 0; i < sheet.length; i++) {
     let record = sheet[i]
-    const [name, price, author, publishDate, classify, count] = record
+    const [name, price, author, publishDate, classify, count, bookNo, publish] = record
 
     let classifyId = classify
 
@@ -250,7 +254,9 @@ router.post('/addMany', async (ctx) => {
       author,
       publishDate,
       classify: classifyId,
-      count
+      count,
+      bookNo,
+      publish
     })
   }
 

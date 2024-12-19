@@ -16,7 +16,7 @@ connect()
     const user = new User({
       account: 'admin',
       password: 'admin',
-      character: characherList.find(item => (item.name === 'member'))._id
+      character: characherList.find(item => (item.name === 'admin'))._id
     })
 
     console.log('正在初始化', )
