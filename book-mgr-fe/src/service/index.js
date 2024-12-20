@@ -9,6 +9,7 @@ import * as inviteCode from "./invite-code";
 import * as bookClassify from "./book-classify";
 import * as profile from "./profile";
 import * as dashboard from "./dashboard";
+import * as userView from "./user-view";
 
 export { 
     auth,
@@ -21,5 +22,6 @@ export {
     inviteCode,
     bookClassify,
     profile,
-    dashboard
+    dashboard,
+    userView
 }

@@ -10,6 +10,7 @@ const bookClassify = require('./book-classify')
 const profile = require('./profile')
 const dashboard = require('./dashboard')
 const upload = require('./upload')
+const userView = require('./user-view')
 
 module.exports = (app) => {
   app.use(auth.routes())
@@ -24,4 +25,5 @@ module.exports = (app) => {
   app.use(profile.routes())
   app.use(dashboard.routes())
   app.use(upload.routes())
+  app.use(userView.routes())
 }

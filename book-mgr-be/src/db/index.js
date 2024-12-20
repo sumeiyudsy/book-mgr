@@ -7,6 +7,7 @@ require('./Schemas/Log')
 require('./Schemas/LogResponse')
 require('./Schemas/ForgetPassword')
 require('./Schemas/BookClassify')
+require('./Schemas/UserView')
 
 const mongoose = require('mongoose')
 

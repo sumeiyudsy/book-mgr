@@ -41,6 +41,11 @@ export default [
     ]
   },
   {
+    title: '意见建议',
+    url: '/userview',
+    onlyAdmin: true
+  },
+  {
     title: '个人设置',
     url: '/profile',
     onlyAdmin: true
