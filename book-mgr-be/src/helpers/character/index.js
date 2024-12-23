@@ -9,7 +9,7 @@
 
 const defaultCharacters = [
   {
-    title: '管理员',
+    title: '管理员权限',
     name: 'admin',
     power: {
       book: [0],
@@ -17,7 +17,7 @@ const defaultCharacters = [
     }
   },
   {
-    title: '成员',
+    title: '借阅权限',
     name: 'member',
     power: {
       book: [1],
@@ -25,7 +25,7 @@ const defaultCharacters = [
     }
   },
   {
-    title: '工作人员',
+    title: '工作人员权限',
     name: 'staff',
     power: {
       book: [0],

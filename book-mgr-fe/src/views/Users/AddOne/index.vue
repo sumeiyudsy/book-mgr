@@ -7,7 +7,7 @@
       @cancel="close"
     >
       <a-form :label-col="{span: 6}">
-        <a-form-item label="账户">
+        <a-form-item label="姓名">
           <a-input v-model:value="addForm.account" />
         </a-form-item>
         <a-form-item label="密码">

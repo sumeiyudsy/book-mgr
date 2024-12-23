@@ -111,7 +111,7 @@
 
   const columns = [
     {
-      title: '账户',
+      title: '姓名',
       dataIndex: 'account'
     },
     {
@@ -119,7 +119,7 @@
       dataIndex: 'createdAt'
     },
     {
-      title: '角色',
+      title: '权限',
       dataIndex: 'character'
     },
     {
