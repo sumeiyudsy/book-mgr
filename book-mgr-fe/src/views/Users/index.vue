@@ -52,10 +52,12 @@
             href="javascript:;"
             @click="resetPassword(record)"
           >重置密码 </a>
-          <a
-            href="javascript:;"
-            @click="remove(record)"
-          > 删除</a>
+          <a-popconfirm v-only-admin placement="leftTop" ok-text="确定" cancel-text="取消" @confirm="remove(record)">
+            <template #title>
+              <p>确定删除 {{ record.account }} 吗？</p>
+            </template>
+            <a href="javascript:;">删除</a>
+          </a-popconfirm>
         </template>
       </template>
     </a-table>
@@ -165,7 +167,7 @@
 
     result(res)
       .success(({ msg }) => {
-        message.success(msg)
+        message.success('密码重置成功')
       })
   }
 

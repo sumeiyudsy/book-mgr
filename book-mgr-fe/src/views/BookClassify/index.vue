@@ -1,5 +1,5 @@
 <template>
-    <a-card title="邀请码管理" v-only-admin>
+    <a-card title="图书分类管理" v-only-admin>
   
       <div class="add-wrap">
         <a-input

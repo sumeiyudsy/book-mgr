@@ -1,5 +1,5 @@
 <template>
-  <a-card v-only-admin>
+  <a-card>
     <h2>意见建议</h2>
 
     <a-divider />
@@ -115,7 +115,7 @@
   })
   const { userInfo } = store.state
   
-  const addView = async (record) => {
+  const addView = async () => {
     const time = new Date().getTime()
     const userName = addForm.value.anonymous ? '匿名' : userInfo.account
     if (addForm.value.view === '') {

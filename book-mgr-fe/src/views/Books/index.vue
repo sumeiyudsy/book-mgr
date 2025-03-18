@@ -1,5 +1,5 @@
 <template>
-  <a-card :title="props.simple ? '最近添加的图书' : ''">
+  <a-card v-only-admin :title="props.simple ? '最近添加的图书' : ''">
     <h2 v-if="!props.simple">图书列表</h2>
 
     <a-divider v-if="!props.simple" />
@@ -29,7 +29,7 @@
           :headers="headers"
           @change="onUploadChange"
         >
-          <a-button type="primary">上传 EXCEL 添加</a-button>
+          <a-button type="primary" v-only-admin>上传 EXCEL 添加</a-button>
         </a-upload>
       </div>
       
@@ -49,26 +49,36 @@
         <template v-if="column.dataIndex === 'classify'">
           <span>{{ getBookClassify(text) }}</span>
         </template>
-        <template v-if="column.dataIndex === 'count'">
+        <template v-if="column.dataIndex === 'borrowed'">
+          <span>{{ formatBorrowed(text) }}</span>
+        </template>
+        <template v-if="column.dataIndex === 'ordered'">
+          <span>{{ formatOrdered(text) }}</span>
+        </template>
+        <!-- <template v-if="column.dataIndex === 'count'">
           <a href="javascript:;" @click="editCount('IN_COUNT', record)">入库 </a>
           <span>{{ text }}</span>
           <a href="javascript:;" @click="editCount('OUT_COUNT', record)"> 出库</a>
-        </template>
+        </template> -->
         <template v-if="column.title === '操作'">
-          <a
+          <a-button
+            type="link"
             href="javascript:;"
+            v-only-admin
             @click="toDetail(record)"
-          >详情 </a>
-          <a
+          >详情 </a-button>
+          <a-button
+            type="link"
             v-only-admin
             href="javascript:;"
             @click="update(record)"
-          >编辑 </a>
-          <a
-            v-only-admin
-            href="javascript:;"
-            @click="remove(record)"
-          >删除</a>
+          >编辑</a-button>
+          <a-popconfirm placement="leftTop" ok-text="确定" cancel-text="取消" @confirm="remove(record)">
+            <template #title>
+              <p>确定删除 《{{ record.name }}》 吗？</p>
+            </template>
+            <a-button :disabled="record.borrewed" type="link" href="javascript:;" v-only-admin>删除</a-button>
+          </a-popconfirm>
         </template>
       </template>
     </a-table>
@@ -142,29 +152,37 @@
       title: '作者',
       dataIndex: 'author'
     },
+    // {
+    //   title: '库存',
+    //   dataIndex: 'count'
+    // },
     {
-      title: '库存',
-      dataIndex: 'count'
-    },
-    {
-      title: '价格',
+      title: '价格(元)',
       dataIndex: 'price'
     },
     {
-      title: '日期',
+      title: '出版日期',
       dataIndex: 'publishDate'
     },
-    {
-      title: '分类',
-      dataIndex: 'classify'
-    },
+    // {
+    //   title: '分类',
+    //   dataIndex: 'classify'
+    // },
     {
       title: '出版社',
       dataIndex: 'publish'
     },
     {
+      title: '是否借阅',
+      dataIndex: 'borrowed'
+    },
+    {
+      title: '是否预约',
+      dataIndex: 'ordered'
+    },
+    {
       title: '图书编号',
-      dataIndex: 'bookNo'
+      dataIndex: '_id'
     }
   ]
 
@@ -269,7 +287,15 @@
 
         })
     }
-  } 
+  }
+  
+  const formatBorrowed = (val) => {
+    return val ? '已借阅' : '未借阅'
+  }
+
+  const formatOrdered = (val) =>  {
+    return val ? '已预约' : '未预约'
+  }
   
 </script>
 

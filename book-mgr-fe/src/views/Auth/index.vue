@@ -2,7 +2,7 @@
   <div class="auth">
     <div class="bg"></div>
     <div class="title-info">
-      <img src="../../assets/book.png" alt="" class="image">
+      <img src="../../assets/book.png" alt="" class="image" />
       <h2 class="title">图书管理系统后台</h2>
     </div>
 
@@ -36,6 +36,14 @@
           </div>
           <div class="item">
             <a-button size="large" type="primary" @click="login">登录</a-button>
+          </div>
+          <br />
+          <div class="tip">
+            <p>提示：</p>
+            <p>1、账号：admin，密码：admin</p>
+            <p>
+              2、创建未指定密码的账号，密码默认是12345，重置密码后密码是12345
+            </p>
           </div>
         </a-tab-pane>
 
@@ -74,100 +82,101 @@
             </a-input>
           </div>
           <div class="item">
-            <a-button size="large" type="primary" @click="register">注册</a-button>
+            <a-button size="large" type="primary" @click="register"
+              >注册</a-button
+            >
           </div>
         </a-tab-pane>
       </a-tabs>
     </div>
   </div>
 
-  <forget-password
-    v-model:showModal="showModal"
-  />
+  <forget-password v-model:showModal="showModal" />
 </template>
 
 <script setup>
-  import { ref } from 'vue'
-  import { auth } from '@/service'
-  import { message } from 'ant-design-vue'
-  import { result } from '@/helpers/utils'
-  import { getCharacterInfoById } from '@/helpers/character'
-  import store from '@/store'
-  import { useRouter} from 'vue-router'
-  import { setToken } from '@/helpers/token'
-  import forgetPassword from './ForgetPassword/index'
+import { ref } from "vue";
+import { auth } from "@/service";
+import { message } from "ant-design-vue";
+import { result } from "@/helpers/utils";
+import { getCharacterInfoById } from "@/helpers/character";
+import store from "@/store";
+import { useRouter } from "vue-router";
+import { setToken } from "@/helpers/token";
+import forgetPassword from "./ForgetPassword/index";
 
-  const router = useRouter()
-  // 数据源
-  const loginForm = ref({
-    account: '',
-    password: ''
-  })
+const router = useRouter();
+// 数据源
+const loginForm = ref({
+  account: "",
+  password: "",
+});
 
-  const login = async () => {
-    if (loginForm.value.account === '') {
-      message.info('请输入账户')
-      return
-    }
-    if (loginForm.value.password === '') {
-      message.info('请输密码')
-      return
-    }
-    const res = await auth.login(loginForm.value.account, loginForm.value.password)
-    result(res)
-      .success(async ({ msg, data: { user, token }}) => {
-        message.success(msg)
-
-        setToken(token)
-        
-        await store.dispatch('getCharacterInfo')
-
-        store.commit('setUserInfo', user)
-        store.commit('setUserCharacter', getCharacterInfoById(user.character))
-
-        router.replace('/books')
-      })
+const login = async () => {
+  if (loginForm.value.account === "") {
+    message.info("请输入账户");
+    return;
   }
-
-  // 注册
-  const regForm = ref({
-    account: '',
-    password: '',
-    inviteCode: ''
-  })
-
-  const register = async () => {
-    if (regForm.value.account === '') {
-      message.info('请输入账户')
-      return
-    }
-    if (regForm.value.password === '') {
-      message.info('请输密码')
-      return
-    }
-    if (regForm.value.inviteCode === '') {
-      message.info('请输邀请码')
-      return
-    }
-    const res = await auth.register(
-      regForm.value.account,
-      regForm.value.password,
-      regForm.value.inviteCode
-    )
-
-    result(res)
-      .success((data) => {
-        message.success(data.msg)
-      })
+  if (loginForm.value.password === "") {
+    message.info("请输密码");
+    return;
   }
+  const res = await auth.login(
+    loginForm.value.account,
+    loginForm.value.password
+  );
+  result(res).success(async ({ msg, data: { user, token } }) => {
+    message.success(msg);
 
-  // 忘记密码
-  let showModal = ref(false)
-  const forgetPwd = async () => {
-    showModal.value = true
+    setToken(token);
+
+    await store.dispatch("getCharacterInfo");
+
+    store.commit("setUserInfo", user);
+    store.commit("setUserCharacter", getCharacterInfoById(user.character));
+
+    router.replace("/books");
+  });
+};
+
+// 注册
+const regForm = ref({
+  account: "",
+  password: "",
+  inviteCode: "",
+});
+
+const register = async () => {
+  if (regForm.value.account === "") {
+    message.info("请输入账户");
+    return;
   }
+  if (regForm.value.password === "") {
+    message.info("请输密码");
+    return;
+  }
+  if (regForm.value.inviteCode === "") {
+    message.info("请输邀请码");
+    return;
+  }
+  const res = await auth.register(
+    regForm.value.account,
+    regForm.value.password,
+    regForm.value.inviteCode
+  );
+
+  result(res).success((data) => {
+    message.success(data.msg);
+  });
+};
+
+// 忘记密码
+let showModal = ref(false);
+const forgetPwd = async () => {
+  showModal.value = true;
+};
 </script>
 
 <style lang="scss" scpoed>
-  @import './index.scss';
+@import "./index.scss";
 </style>

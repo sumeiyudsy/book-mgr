@@ -11,7 +11,7 @@
           <a-input v-model:value="addForm.account" />
         </a-form-item>
         <a-form-item label="密码">
-          <a-input v-model:value="addForm.password" />
+          <a-input-password v-model:value="addForm.password"  />
         </a-form-item>
         <a-form-item label="角色">
           <a-select v-model:value="addForm.character">
