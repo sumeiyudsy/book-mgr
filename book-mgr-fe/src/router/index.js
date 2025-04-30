@@ -47,10 +47,6 @@ const privateRoutes = [
     name: 'User',
     component: layout,
     redirect: '/user/list',
-    meta: {
-      menu: true,
-      title: '用户管理'
-    },
     children: [
       {
         path: '/user/list',
