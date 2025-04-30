@@ -5,58 +5,65 @@
       v-model:openKeys="openKeys"
       v-model:selectedKeys="selectedKeys"
       mode="inline"
-      v-for="(item) in menu"
-      :key="item.title"
-      v-only-admin="item.onlyAdmin"
+      v-for="(item) in routers"
+      :key="item.name"
     >
       <a-sub-menu
-        v-if="item.children"
-        :key="item.title"
+        v-if="item.children.length > 0"
+        :key="item.name"
       >
         <template #title>
-          <span> <MailOutlined /> <span>{{ item.title }}</span></span>
+          <span> <MailOutlined /> <span>{{ item.meta.title }}</span></span>
         </template>
         <a-menu-item
           v-for="(child) in item.children"
-          :key="child.url"
-          @click="to(child.url)"
+          :key="child.path"
+          @click="to(child.path)"
         >
-          {{ child.title }}
+          {{ child.meta.title }}
         </a-menu-item>
       </a-sub-menu>
-      <a-menu-item v-else :key="item.url" @click="to(item.url)">
-        <span>{{ item.title }}</span>
+      <a-menu-item v-else :key="item.path" @click="to(item.path)">
+        <span>{{ item.meta.title }}</span>
       </a-menu-item>
     </a-menu>
   </div>
 </template>
 
 <script setup>
-  import { ref, onMounted } from 'vue'
+  import { ref, onMounted, computed, watch } from 'vue'
   import menu from '@/config/menu'
   import { useRouter, useRoute } from 'vue-router'
-
-  const router = useRouter()
-  const route = useRoute()
+  import { filterRouters, generateMenus } from '@/utils/route'
 
   const openKeys = ref([])
   const selectedKeys = ref([])
-
-  onMounted(() => {
-    selectedKeys.value = [route.path]
-
-    menu.forEach(item => {
-      (item.children || []).forEach(child => {
-        if (child.url === route.path) {
-          openKeys.value = [item.title]
-        }
-      })
-    })
+  const route = useRoute()
+  selectedKeys.value = [route.path]
+  
+  const router = useRouter()
+  const routers = computed(() => {
+    const filterRoutes = filterRouters(router.getRoutes())
+    return generateMenus(filterRoutes)    
   })
 
-
-  const to = (url) => {
-    router.push(url)
+  const to = (path) => {
+    router.push(path)
   }
+
+  watch(
+  routers,
+  () => {
+    if (routers.length) {
+      routers.forEach(item => {
+        (item.children || []).forEach(child => {
+          if (child.path === route.path) {
+            openKeys.value = [item.name]
+          }
+        })
+      })
+    }
+  }
+)
 
 </script>
