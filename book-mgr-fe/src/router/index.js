@@ -2,7 +2,6 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import layout from '../layout/BasicLayout'
 
 const privateRoutes = [
-  
   {
     path: '/dashboard',
     name: 'Dashboard',
